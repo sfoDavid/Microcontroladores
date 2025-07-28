@@ -1,0 +1,2 @@
+../Src/aht20.c:9:6:AHT20_Init	1
+../Src/aht20.c:33:6:AHT20_ReadTemperatureHumidity	2

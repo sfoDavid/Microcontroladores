@@ -1,0 +1,5 @@
+/home/david/STM32CubeIDE/workspace_1.18.1/Projeto_Final/F1_Header/Include/core_cm3.h:1511:22:__NVIC_EnableIRQ	16	static
+../Src/delay.c:13:6:delay_init	8	static
+../Src/delay.c:25:6:TIM2_IRQHandler	4	static
+../Src/delay.c:35:6:delay_ms	16	static
+../Src/delay.c:42:6:delay_ms_polling	24	static,ignoring_inline_asm
