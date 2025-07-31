@@ -1,0 +1,2 @@
+../Src/adc_ldr.c:4:6:ADC_LDR_Init	2
+../Src/adc_ldr.c:25:10:ADC_LDR_Read	2
