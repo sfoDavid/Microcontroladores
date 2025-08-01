@@ -30,7 +30,7 @@ void AHT20_Init(void) {
 
 
 
-void AHT20_ReadTemperatureHumidity(float* temperature, float* humidity) {
+void AHT20_ReadTemperatureHumidity(uint32_t* temperature, uint32_t* humidity) {
     uint8_t cmd[3] = { AHT20CMD_TRIGGER, 0x33, 0x00 };
     uint8_t data[6];
 
@@ -51,8 +51,8 @@ void AHT20_ReadTemperatureHumidity(float* temperature, float* humidity) {
     uart_print_int("RAW_HUM", rawHumidity);
     uart_print_int("RAW_TEMP", rawTemp);
 
-    *humidity = ((float)rawHumidity / 1048576.0f) * 100.0f;
-    *temperature = ((float)rawTemp / 1048576.0f) * 200.0f - 50.0f;
+    *humidity = rawHumidity;
+    *temperature = rawTemp;
 
     print_uart("Medição finalizada\r\n");
 }

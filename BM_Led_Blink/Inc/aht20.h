@@ -16,6 +16,6 @@
 
 // Funções principais
 void AHT20_Init(void);
-void AHT20_ReadTemperatureHumidity(float *temperature, float *humidity);
+void AHT20_ReadTemperatureHumidity(uint32_t* temperature, uint32_t* humidity);
 
 #endif /* AHT20_H_ */

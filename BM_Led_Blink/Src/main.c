@@ -4,12 +4,16 @@
 #include "aht20.h"
 #include "nrf24.h"
 #include "delay.h"
-#include <string.h>
 #include <stdio.h>
 #include "adc_ldr.h"
+#include <string.h>
 
 float temperature, humidity;
 uint16_t ldr;
+uint32_t temp;
+uint32_t hum;
+
+
 
 void print_nrf_debug(void) {
     uart_print_int("CONFIG", nRF24_ReadReg(CONFIG));
@@ -21,8 +25,9 @@ void print_nrf_debug(void) {
 }
 
 int main(void) {
+    // Endereço de 5 bytes do receptor (deve bater com RX_ADDR_P0 do receptor)
     uint8_t tx_address[5] = {0x01, 0xDD, 0xCC, 0xBB, 0xAA};
-    uint8_t payload[8];  // 4 bytes para float temperatura + 4 bytes umidade
+    uint8_t payload[32]; // 32 é o máx. permitido no NRF24
 
     UART_Init();
     delay_init();
@@ -34,31 +39,30 @@ int main(void) {
     print_uart("Inicializando sensor e rádio...\r\n");
 
     nRF24_Init();
-    nRF24_TX_Mode(tx_address, 10); // canal 10 com Auto-ACK
+    nRF24_TX_Mode(tx_address, 10); // Canal 10, com Auto-ACK
 
     print_uart("[NRF24 DEBUG INICIAL]\r\n");
     print_nrf_debug();
 
     while (1) {
-
-        AHT20_ReadTemperatureHumidity(&temperature, &humidity);
-
+        AHT20_ReadTemperatureHumidity(&temp, &hum);
         ldr = ADC_LDR_Read();
-        // Envia via UART para debug
-        char buf[64];
-        float voltage = (ldr / 4095.0f) * 3.3f;
 
-                // Formata a string para UART
-        snprintf(buf, sizeof(buf), "LDR Raw: %u | Tensão: %.2f V\r\n", ldr, voltage);
-        uart_write((uint8_t*)buf);
+        uart_print_int("RAW_HUM", hum);
+        uart_print_int("RAW_TEMP", temp);
+        uart_print_int("LDR", ldr);
 
-        // Copia os floats diretamente para o payload (memória binária)
-        memcpy(&payload[0], &temperature, sizeof(float));
-        memcpy(&payload[4], &humidity, sizeof(float));
+        // Monta payload com dados brutos
+        memcpy(&payload[0],  &temp, 4);   // temp ocupa 4 bytes
+        memcpy(&payload[4],  &hum, 4);    // hum ocupa 4 bytes
+        memcpy(&payload[8],  &ldr, 2);    // ldr ocupa 2 bytes
 
+        // Envia por UART (debug)
         print_uart("[NRF24] Enviando dados brutos...\r\n");
-        nRF24_WritePayload(payload, 8);
-        delay_ms(5);
+
+        // Envia por NRF24
+        nRF24_WritePayload(payload, 10);  // apenas os 10 bytes úteis
+        delay_ms(2);
 
         uint8_t status = nRF24_GetStatus();
         if (status & MASK_TX_DS) {
@@ -73,4 +77,5 @@ int main(void) {
         nRF24_ClearIRQFlags();
         delay_ms(1000);
     }
+
 }
