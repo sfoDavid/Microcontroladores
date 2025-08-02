@@ -7,7 +7,9 @@ Este projeto implementa um sistema de monitoramento ambiental usando o microcont
 ## Autores
 
 David Silva Fernandes de Oliveira - 539402
+
 Maria Eduarda Santana Marques - 538264
+
 Gisleno Rodrigues de Alencar Silva Júnior -  511938
 
 
