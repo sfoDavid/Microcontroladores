@@ -1,0 +1,11 @@
+/home/david/STM32CubeIDE/workspace_1.18.1/Usart/F1_Header/Include/core_cm3.h:1511:22:__NVIC_EnableIRQ	2
+../Src/main.c:34:5:main	14
+../Src/main.c:95:6:pwm_init	1
+../Src/main.c:125:6:pwm_timer3_init	1
+../Src/main.c:154:6:enable_usart	1
+../Src/main.c:175:6:uart1_write_char	3
+../Src/main.c:181:6:uart1_write_string	2
+../Src/main.c:187:6:uart1_read_char	2
+../Src/main.c:192:6:uart1_read_string	4
+../Src/main.c:208:6:timer4_init	1
+../Src/main.c:220:6:TIM4_IRQHandler	4
